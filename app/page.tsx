@@ -10,7 +10,7 @@ export default function Home() {
       <header className="site-header">
         <div className="container nav">
           <a className="brand" href="#">
-            <img src="/omololu_hospital_logo.jpg" alt="Omololu Hospital logo" />
+            <img src="/photo_2026-09-26_02-25-49.jpg" alt="Omololu Hospital logo" />
             <span>OMOLOLU HOSPITAL</span>
           </a>
           <nav aria-label="Main navigation">
@@ -42,7 +42,7 @@ export default function Home() {
             </div>
           </div>
           <div className="hero-card">
-            <img src="/omololu_hospital_logo.jpg" alt="OMOLOLU HOSPITAL AND DIAGNOSTIC SERVICES" />
+            <img src="/photo_2026-09-26_02-25-49.jpg" alt="OMOLOLU HOSPITAL AND DIAGNOSTIC SERVICES" />
             <p>Patient-focused care and convenient access to hospital services.</p>
           </div>
         </div>
