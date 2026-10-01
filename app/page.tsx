@@ -19,6 +19,9 @@ export default function Home() {
             <a href="#doctor">Doctor</a>
             <a href="#app">Hospital App</a>
             <a href="#contact">Contact</a>
+            <a className="button primary" href="/downloads/omololu-hospital.apk" download>
+              Download App
+            </a>
           </nav>
         </div>
       </header>
@@ -109,11 +112,6 @@ export default function Home() {
               The OMOLOLU HOSPITAL mobile application gives patients a dedicated
               account for managing their hospital experience.
             </p>
-            <div className="actions">
-              <a className="button primary" href="/downloads/omololu-hospital.apk" download>
-                Download OMOLOLU HOSPITAL App
-              </a>
-            </div>
             <p className="section-copy">
               Android users can download the app and follow the installation prompt on their phone.
             </p>
@@ -147,6 +145,9 @@ export default function Home() {
         <div className="container footer-inner">
           <span>© {new Date().getFullYear()} OMOLOLU HOSPITAL AND DIAGNOSTIC SERVICES</span>
           <span>Quality healthcare, made simple.</span>
+          <a className="button primary" href="/downloads/omololu-hospital.apk" download>
+            Download OMOLOLU HOSPITAL App
+          </a>
         </div>
       </footer>
     </main>
