@@ -109,6 +109,14 @@ export default function Home() {
               The OMOLOLU HOSPITAL mobile application gives patients a dedicated
               account for managing their hospital experience.
             </p>
+            <div className="actions">
+              <a className="button primary" href="/downloads/omololu-hospital.apk" download>
+                Download OMOLOLU HOSPITAL App
+              </a>
+            </div>
+            <p className="section-copy">
+              Android users can download the app and follow the installation prompt on their phone.
+            </p>
           </div>
           <div className="feature-grid">
             <article className="feature"><strong>Patient accounts</strong><span>Create an account and keep your session active until you log out or remove the app.</span></article>
