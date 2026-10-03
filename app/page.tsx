@@ -94,7 +94,7 @@ export default function Home() {
           <div>
             <p className="eyebrow">Medical team</p>
             <h2>Dr. (Mrs.) Omololu-Aso Oluwaseun Oluwatoyin</h2>
-            <p className="doctor-role">CMD / O&amp;G</p>
+            <p className="doctor-role">CMD / CEO</p>
             <p className="section-copy">
               The hospital is led by Dr. (Mrs.) Omololu-Aso Oluwaseun Oluwatoyin,
               with the professional profile maintained for the hospital's digital services.
