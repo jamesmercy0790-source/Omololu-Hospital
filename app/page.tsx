@@ -13,6 +13,9 @@ export default function Home() {
             <img src="/photo_2026-09-26_02-25-49.jpg" alt="Omololu Hospital logo" />
             <span>OMOLOLU HOSPITAL</span>
           </a>
+          <a className="mobile-download" href="/downloads/omololu-hospital.apk" download>
+            Download App
+          </a>
           <nav aria-label="Main navigation">
             <a href="#about">About</a>
             <a href="#services">Services</a>
