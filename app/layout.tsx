@@ -61,6 +61,9 @@ export const metadata: Metadata = {
     images: ["/photo_2026-09-26_02-25-49.jpg"],
   },
   icons: { icon: "/photo_2026-09-26_02-25-49.jpg" },
+  verification: {
+    google: "LZoXCBzcz-6VpqPaBfJBto71SeSPBWPYyaj8WS2CWtM",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
