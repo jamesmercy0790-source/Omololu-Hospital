@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: "24-Hour Hospital in Akobo, Ibadan",
   description: "Omololu Hospital and Diagnostic Services provides 24-hour healthcare, emergency services, maternity care, surgery, laboratory tests and ultrasound services in Akobo, Ibadan.",
   alternates: { canonical: "/" },
+  openGraph: { type: "website", url: "/", siteName: "OMOLOLU HOSPITAL AND DIAGNOSTIC SERVICES", title: "24-Hour Hospital in Akobo, Ibadan | Omololu Hospital", description: "Omololu Hospital and Diagnostic Services provides 24-hour healthcare, emergency services, maternity care, surgery, laboratory tests and ultrasound services in Akobo, Ibadan.", images: [{ url: "/photo_2026-09-26_02-25-49.jpg", alt: "OMOLOLU HOSPITAL AND DIAGNOSTIC SERVICES" }] },
+  twitter: { card: "summary_large_image", title: "24-Hour Hospital in Akobo, Ibadan | Omololu Hospital", description: "Omololu Hospital and Diagnostic Services provides 24-hour healthcare, emergency services, maternity care, surgery, laboratory tests and ultrasound services in Akobo, Ibadan.", images: ["/photo_2026-09-26_02-25-49.jpg"] },
 };
 
 const services = [
