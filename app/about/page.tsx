@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import SiteHeader from "../../components/SiteHeader";
 import SiteFooter from "../../components/SiteFooter";
-export const metadata: Metadata = { title: "About Us, Vision, Mission and Core Values", description: "Learn about Omololu Hospital and Diagnostic Services, our mission, vision, core values and commitment to compassionate healthcare in Ibadan.", alternates: { canonical: "/about" } };
+export const metadata: Metadata = { title: "About Us, Vision, Mission and Core Values", description: "Learn about Omololu Hospital and Diagnostic Services, our mission, vision, core values and commitment to compassionate healthcare in Ibadan.", alternates: { canonical: "/about" },
+  openGraph: { type: "website", url: "/about", siteName: "OMOLOLU HOSPITAL AND DIAGNOSTIC SERVICES", title: "About Us, Vision, Mission and Core Values | Omololu Hospital", description: "Learn about Omololu Hospital and Diagnostic Services, our mission, vision, core values and commitment to compassionate healthcare in Ibadan.", images: [{ url: "/photo_2026-09-26_02-25-49.jpg", alt: "OMOLOLU HOSPITAL AND DIAGNOSTIC SERVICES" }] },
+  twitter: { card: "summary_large_image", title: "About Us, Vision, Mission and Core Values | Omololu Hospital", description: "Learn about Omololu Hospital and Diagnostic Services, our mission, vision, core values and commitment to compassionate healthcare in Ibadan.", images: ["/photo_2026-09-26_02-25-49.jpg"] } };
 const values = [
 ["Excellence","We strive for the highest attainable standards in medical care, diagnosis, treatment, and service delivery."],
 ["Compassion","We approach every patient with empathy, kindness, patience, and genuine concern for their physical and emotional well-being."],
