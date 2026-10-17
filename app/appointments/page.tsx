@@ -31,7 +31,7 @@ export default function AppointmentsPage(){
    if(error)throw error;
    const id=data as string;
    setMessage("Appointment request created. Continue to secure payment to confirm it.");
-   const {data:payment,error:payError}=await supabase.functions.invoke("initialize-payment",{body:{appointment_id:id}});
+   const {data:payment,error:payError}=await supabase.functions.invoke("initialize-payment",{body:{appointment_id:id,platform:"web"}});
    if(payError||payment?.error)throw new Error(payment?.error||payError?.message||"Could not start payment. Your appointment remains unconfirmed.");
    if(payment?.status==="paid"){setMessage("This appointment is already paid.");await load();return;}
    if(!payment?.authorization_url)throw new Error("Payment link was not returned. Your appointment remains unconfirmed.");
@@ -41,7 +41,7 @@ export default function AppointmentsPage(){
  }
  async function pay(id:string){
   setBusy(true);setError("");setMessage("");
-  try{const {data,error}=await supabase.functions.invoke("initialize-payment",{body:{appointment_id:id}});if(error||data?.error)throw new Error(data?.error||error?.message||"Could not start payment.");if(data?.authorization_url)window.location.assign(data.authorization_url);else if(data?.status==="paid"){setMessage("Already paid.");await load();}else throw new Error("Payment session is not ready. Please wait and retry.");}
+  try{const {data,error}=await supabase.functions.invoke("initialize-payment",{body:{appointment_id:id,platform:"web"}});if(error||data?.error)throw new Error(data?.error||error?.message||"Could not start payment.");if(data?.authorization_url)window.location.assign(data.authorization_url);else if(data?.status==="paid"){setMessage("Already paid.");await load();}else throw new Error("Payment session is not ready. Please wait and retry.");}
   catch(err){setError(err instanceof Error?err.message:"Could not start payment.");}finally{setBusy(false);}
  }
  const money=(v:number)=>new Intl.NumberFormat("en-NG",{style:"currency",currency:"NGN",maximumFractionDigits:2}).format(Number(v||0));
