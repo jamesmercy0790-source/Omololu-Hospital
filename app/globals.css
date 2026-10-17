@@ -279,3 +279,47 @@ footer .button { min-height: 50px; }
 @media (prefers-reduced-motion: reduce) {
   .site-loader-mark::before, .site-loader-mark::after, .site-loader-mark img, .site-loader-name, .site-loader-caption, .site-loader-track span { animation: none; }
 }
+
+/* Patient portal — preserves the hospital's existing blue, white and navy palette. */
+.account-page,.booking-page{min-height:70vh;padding:54px 20px 72px;background:#f4f7fb;color:#152238}
+.account-card,.booking-panel{background:#fff;border:1px solid #dce5f0;border-radius:18px;box-shadow:0 12px 36px rgba(17,40,74,.08)}
+.account-card{width:min(100%,560px);margin:0 auto;padding:clamp(22px,5vw,42px)}
+.booking-wrap{width:min(100%,1000px);margin:0 auto}
+.booking-panel{padding:clamp(20px,4vw,34px);margin:22px 0}
+.account-back{display:inline-block;color:#1565c0;font-weight:700;text-decoration:none;margin-bottom:24px}
+.eyebrow{font-size:.78rem;letter-spacing:.13em;font-weight:800;color:#1565c0;margin:0 0 10px}
+.account-card h1,.booking-wrap h1{font-size:clamp(1.9rem,4vw,2.65rem);line-height:1.15;color:#10213b;margin:0 0 12px}
+.booking-panel h2{font-size:1.45rem;color:#10213b;margin:0 0 12px}
+.account-intro{color:#56657a;line-height:1.65;margin:0 0 24px}
+.account-form{display:flex;flex-direction:column;gap:16px;margin-top:22px}
+.account-form label{display:flex;flex-direction:column;gap:7px;color:#1d2d44;font-size:.94rem;font-weight:700}
+.account-form input,.account-form select,.account-form textarea{width:100%;border:1px solid #cbd6e4;border-radius:9px;padding:12px 13px;font:inherit;font-weight:400;color:#152238;background:#fff;outline:none;min-height:46px}
+.account-form textarea{resize:vertical;min-height:90px}
+.account-form input:focus,.account-form select:focus,.account-form textarea:focus{border-color:#1565c0;box-shadow:0 0 0 3px rgba(21,101,192,.13)}
+.account-form input[readonly]{background:#f1f5f9;color:#56657a}
+.account-form .button,.booking-panel .button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:12px 18px;border:0;border-radius:9px;font:inherit;font-weight:800;text-decoration:none;cursor:pointer}
+.account-form .button.primary,.booking-panel .button.primary{background:#1565c0;color:#fff}
+.account-form .button.secondary{background:#edf3fa;color:#16416f;border:1px solid #d4e0ef}
+.account-form .button:disabled,.booking-panel .button:disabled{opacity:.65;cursor:wait}
+.account-form .full{width:100%}
+.text-button{border:0;background:transparent;color:#1565c0;font:inherit;font-weight:700;cursor:pointer;padding:5px}
+.form-alert{border-radius:9px;padding:12px 14px;line-height:1.5;margin:14px 0}
+.form-alert.error{background:#fff0f0;border:1px solid #f3caca;color:#8c2020}
+.form-alert.success{background:#edf9f1;border:1px solid #bde7ca;color:#145b2d}
+.privacy-note{font-size:.84rem;line-height:1.6;color:#65748a;margin-top:24px}
+.avatar-row{display:flex;align-items:center;gap:16px;margin-bottom:8px}
+.patient-avatar{width:76px;height:76px;object-fit:cover;border-radius:50%;border:2px solid #dbe7f5}
+.patient-avatar.placeholder{display:grid;place-items:center;background:#e8f1fc;color:#1565c0;font-size:1.8rem;font-weight:800}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.booking-form small{color:#63728a;line-height:1.55}
+.appointment-list{display:flex;flex-direction:column;gap:12px}
+.appointment-item{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:18px 0;border-bottom:1px solid #e6edf5}
+.appointment-item:last-child{border-bottom:0;padding-bottom:0}
+.appointment-item strong{color:#142944}
+.appointment-item p{margin:7px 0;color:#5e6e83;line-height:1.5;overflow-wrap:anywhere}
+.appointment-side{display:flex;flex-direction:column;align-items:flex-end;gap:12px;white-space:nowrap}
+.status-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.status-pill{display:inline-block;border-radius:999px;padding:5px 9px;background:#edf2f8;color:#33445b;font-size:.75rem;font-weight:800}
+.status-pill.paid{background:#e6f7ec;color:#176335}
+.status-pill.pending{background:#fff4d9;color:#805a06}
+@media(max-width:620px){.account-page,.booking-page{padding:30px 13px 50px}.form-grid{grid-template-columns:1fr}.appointment-item{flex-direction:column}.appointment-side{align-items:flex-start;white-space:normal}.account-card{border-radius:14px}.booking-panel{border-radius:14px}}
