@@ -383,3 +383,15 @@ footer .button { min-height: 50px; }
   .booking-page, .account-page { padding-left: 18px; padding-right: 18px; }
   .booking-form .form-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+
+/* Final desktop sidebar correction: reserve its width for the page content.
+   The previous body padding reset was overriding the sidebar offset. */
+@media (min-width: 851px) {
+  body { padding-left: 258px !important; }
+  .emergency-bar { margin-left: 0; }
+  .site-header { left: 0; width: 258px; }
+}
+@media (max-width: 850px) {
+  body { padding-left: 0 !important; }
+}
