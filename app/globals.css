@@ -323,3 +323,48 @@ footer .button { min-height: 50px; }
 .status-pill.paid{background:#e6f7ec;color:#176335}
 .status-pill.pending{background:#fff4d9;color:#805a06}
 @media(max-width:620px){.account-page,.booking-page{padding:30px 13px 50px}.form-grid{grid-template-columns:1fr}.appointment-item{flex-direction:column}.appointment-side{align-items:flex-start;white-space:normal}.account-card{border-radius:14px}.booking-panel{border-radius:14px}}
+
+
+/* Desktop sidebar and compact mobile appointment action — keep the established palette. */
+.mobile-nav-actions { display: contents; }
+.mobile-book { display: none; }
+.nav-signout { border: 0; background: transparent; color: #1565c0; font: inherit; font-weight: 800; cursor: pointer; padding: 10px 12px; }
+.nav-signout:hover { text-decoration: underline; }
+@media (min-width: 851px) {
+  body { padding-left: 258px; }
+  .site-header { position: fixed; inset: 0 auto 0 0; width: 258px; height: 100vh; overflow-y: auto; border-right: 1px solid #dbe5ef; border-bottom: 0; background: #fff; box-shadow: 8px 0 30px rgba(16,24,40,.04); animation: none; }
+  .site-header .nav { width: 100%; min-height: 100%; display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 28px; padding: 28px 18px; }
+  .site-header .brand { justify-content: flex-start; white-space: normal; line-height: 1.4; }
+  .site-header .brand img { flex: 0 0 auto; }
+  .site-header .primary-navigation { display: flex; width: 100%; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 5px; padding: 0; font-size: 14px; }
+  .primary-navigation .nav-link { display: block; padding: 13px 14px; border-radius: 10px; color: #24364b; }
+  .primary-navigation .nav-link:hover { color: #1565c0; background: #f0f6ff; transform: none; }
+  .primary-navigation .nav-link.active { background: #eaf3ff; color: #1565c0; }
+  .primary-navigation .nav-download { width: 100%; margin: 12px 0 0; }
+  .nav-signout { text-align: left; padding: 13px 14px; }
+  .site-header .mobile-nav-actions { display: none; }
+  .emergency-inner { width: min(1160px, calc(100% - 40px)); }
+}
+@media (max-width: 850px) {
+  body { padding-left: 0; }
+  .site-header { position: sticky; top: 0; width: auto; height: auto; overflow: visible; }
+  .site-header .nav { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; padding-top: 10px; padding-bottom: 10px; }
+  .site-header .brand { grid-column: 1; }
+  .mobile-nav-actions { display: flex; grid-column: 2; align-items: center; gap: 8px; }
+  .mobile-book { display: inline-flex; min-height: 42px; padding: 10px 12px; border-radius: 9px; font-size: 12px; white-space: nowrap; }
+  .menu-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-width: 44px; min-height: 42px; padding: 9px 10px; border: 1px solid #dbe5ef; border-radius: 9px; background: #fff; color: #101828; font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; }
+  .menu-label { display: none; }
+  .primary-navigation { display: none; grid-column: 1 / -1; width: 100%; flex-direction: column; align-items: stretch; gap: 0; padding: 8px 0 4px; border-top: 1px solid #e5e7eb; }
+  .primary-navigation.is-open { display: flex; }
+  .primary-navigation .nav-link { display: block; padding: 13px 12px; border-radius: 8px; font-size: 14px; }
+  .primary-navigation .nav-link.active { background: #eef6ff; }
+  .primary-navigation .nav-download { align-self: stretch; width: 100%; margin: 8px 0 2px; }
+  .primary-navigation .nav-signout { text-align: left; padding: 13px 12px; }
+}
+@media (max-width: 380px) {
+  .brand { font-size: 10px; }
+  .brand img { width: 32px; height: 32px; }
+  .mobile-nav-actions { gap: 5px; }
+  .mobile-book { padding: 9px 8px; font-size: 11px; }
+  .menu-toggle { min-width: 40px; padding: 8px; }
+}
