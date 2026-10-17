@@ -395,3 +395,36 @@ footer .button { min-height: 50px; }
 @media (max-width: 850px) {
   body { padding-left: 0 !important; }
 }
+
+
+/* Definitive desktop layout: keep the fixed sidebar outside the content column.
+   Scope this to the actual app content and keep the emergency strip aligned beside it. */
+@media (min-width: 851px) {
+  body { padding-left: 0 !important; }
+  body > main { margin-left: 280px !important; width: calc(100% - 280px) !important; min-width: 0; }
+  body > main > .emergency-bar,
+  body > main > header.site-header { position: fixed; }
+  body > main > .emergency-bar { top: 0; left: 280px; right: 0; width: auto; margin: 0; }
+  body > main > header.site-header { top: 0; left: 0; bottom: 0; width: 280px; height: 100vh; }
+  body > main > .hero,
+  body > main > .section,
+  body > main > .page-hero,
+  body > main > .account-page,
+  body > main > .booking-page,
+  body > main > footer { width: 100%; min-width: 0; }
+  body > main > .hero { padding-top: 48px; }
+}
+@media (max-width: 850px) {
+  body > main { margin-left: 0 !important; width: 100% !important; }
+  body > main > .emergency-bar { position: relative; inset: auto; width: auto; }
+  body > main > header.site-header { position: sticky; inset: auto; width: auto; height: auto; }
+}
+
+/* Keep entrance and scroll animations to a maximum of two seconds on all devices. */
+@media (min-width: 1px) {
+  .hero-content, h1, .hero-card, .site-header, .quick-contact span, .whatsapp-float,
+  .scroll-reveal, .page-transition {
+    animation-duration: 2s !important;
+    transition-duration: 2s !important;
+  }
+}
