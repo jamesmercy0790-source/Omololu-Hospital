@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import SiteHeader from "../../components/SiteHeader";
 import { supabaseBrowser } from "../../lib/supabase";
 
 type Profile = { id:string; email:string; full_name:string; phone:string; avatar_url:string|null; role:string };
@@ -74,7 +75,7 @@ export default function AccountPage() {
     }catch(err){setError(err instanceof Error?err.message:"Could not upload picture.");}
   }
   async function signOut(){await supabase.auth.signOut();setProfile(null);setMessage("Signed out.");}
-  return <main className="account-page"><div className="account-card">
+  return <><SiteHeader /><main className="account-page"><div className="account-card">
     <Link href="/" className="account-back">← Hospital home</Link>
     <p className="eyebrow">PATIENT ACCOUNT</p><h1>{profile?"Your profile":"Welcome to Omololu Hospital"}</h1>
     <p className="account-intro">Use the same hospital account as the mobile app.</p>
@@ -97,5 +98,5 @@ export default function AccountPage() {
       <button type="button" className="text-button" onClick={async()=>{setError("");setMessage("");if(!email.trim()){setError("Enter your email first.");return;}const {error}=await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(),{redirectTo:window.location.origin+"/account"});if(error)setError(error.message);else setMessage("If the email is registered, a password-reset link has been sent.");}}>Forgot password?</button>
     </form>}
     <p className="privacy-note">Do not use online booking for emergencies. Call the hospital directly.</p>
-  </div></main>;
+  </div></main></>;
 }
