@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import SiteHeader from "../../components/SiteHeader";
 import SiteFooter from "../../components/SiteFooter";
-export const metadata: Metadata = { title: "Frequently Asked Questions", description: "Answers to common questions about opening hours, emergency care, appointments, medical services, maternity, diagnostics, admissions, privacy and contacting Omololu Hospital.", alternates: { canonical: "/faq" } };
+export const metadata: Metadata = { title: "Frequently Asked Questions", description: "Answers to common questions about opening hours, emergency care, appointments, medical services, maternity, diagnostics, admissions, privacy and contacting Omololu Hospital.", alternates: { canonical: "/faq" },
+  openGraph: { type: "website", url: "/faq", siteName: "OMOLOLU HOSPITAL AND DIAGNOSTIC SERVICES", title: "Frequently Asked Questions | Omololu Hospital", description: "Answers to common questions about opening hours, emergency care, appointments, medical services, maternity, diagnostics, admissions, privacy and contacting Omololu Hospital.", images: [{ url: "/photo_2026-09-26_02-25-49.jpg", alt: "OMOLOLU HOSPITAL AND DIAGNOSTIC SERVICES" }] },
+  twitter: { card: "summary_large_image", title: "Frequently Asked Questions | Omololu Hospital", description: "Answers to common questions about opening hours, emergency care, appointments, medical services, maternity, diagnostics, admissions, privacy and contacting Omololu Hospital.", images: ["/photo_2026-09-26_02-25-49.jpg"] } };
 const faqs = [
 ["What are your hospital's opening hours?","Omololu Hospital and Diagnostic Services is open 24 hours a day, 7 days a week, including weekends and public holidays. We are committed to providing continuous medical care whenever our patients need us."],
 ["Does your hospital provide emergency medical services?","Yes. Our hospital provides 24-hour emergency medical care, including the initial assessment, stabilisation, and management of urgent medical conditions. For emergency assistance, please call +234 806 748 9645 or +234 803 377 0933."],
