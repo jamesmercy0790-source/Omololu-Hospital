@@ -20,7 +20,8 @@ export default function AppointmentsPage(){
   if(se)setError("Could not load available services.");else{setServices((sv||[]) as Service[]);if(sv?.length&&!serviceId)setServiceId(sv[0].id);}
   setProfile(pr);if(ae)setError("Could not load appointments.");else setItems((ap||[]) as Appointment[]);
  }
- useEffect(()=>{void load();},[]);\n useEffect(()=>{let active=true;if(!date){setSlots([]);setTime("");return()=>{active=false};} (async()=>{const {data,error}=await supabase.rpc("get_available_slots",{p_date:date});if(!active)return;if(error){setSlots([]);setTime("");setError("Could not load appointment times for that date.");return;}const next=(data||[]).map((x:any)=>String(x.slot_time).slice(0,5));setSlots(next);setTime(next[0]||"");if(!next.length)setMessage("No appointment times are available on this date. Choose another date.");else setMessage("");})();return()=>{active=false};},[date]);
+ useEffect(()=>{void load();},[]);
+ useEffect(()=>{let active=true;if(!date){setSlots([]);setTime("");return()=>{active=false};} (async()=>{const {data,error}=await supabase.rpc("get_available_slots",{p_date:date});if(!active)return;if(error){setSlots([]);setTime("");setError("Could not load appointment times for that date.");return;}const next=(data||[]).map((x:any)=>String(x.slot_time).slice(0,5));setSlots(next);setTime(next[0]||"");if(!next.length)setMessage("No appointment times are available on this date. Choose another date.");else setMessage("");})();return()=>{active=false};},[date]);
  async function book(e:React.FormEvent){
   e.preventDefault();setBusy(true);setError("");setMessage("");
   try{
