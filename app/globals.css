@@ -368,3 +368,18 @@ footer .button { min-height: 50px; }
   .mobile-book { padding: 9px 8px; font-size: 11px; }
   .menu-toggle { min-width: 40px; padding: 8px; }
 }
+
+
+/* Fix patient portal width inside the desktop sidebar layout. */
+@media (min-width: 851px) {
+  .booking-page, .account-page { width: 100%; min-width: 0; padding-left: clamp(18px, 3vw, 44px); padding-right: clamp(18px, 3vw, 44px); }
+  .booking-wrap { width: 100%; max-width: 1080px; min-width: 0; margin-inline: auto; }
+  .booking-panel, .account-card { min-width: 0; }
+  .booking-form, .booking-form label, .booking-form input, .booking-form select, .booking-form textarea { min-width: 0; }
+  .booking-form .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .booking-form > label, .booking-form > .form-grid { width: 100%; }
+}
+@media (min-width: 851px) and (max-width: 1100px) {
+  .booking-page, .account-page { padding-left: 18px; padding-right: 18px; }
+  .booking-form .form-grid { grid-template-columns: minmax(0, 1fr); }
+}
