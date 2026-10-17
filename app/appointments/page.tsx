@@ -8,7 +8,7 @@ type Appointment={id:string;appointment_date:string;appointment_time:string;stat
 export default function AppointmentsPage(){
  const supabase=supabaseBrowser(),router=useRouter();
  const [userId,setUserId]=useState("");const [services,setServices]=useState<Service[]>([]);const [items,setItems]=useState<Appointment[]>([]);
- const [profile,setProfile]=useState<any>(null);const [serviceId,setServiceId]=useState("");const [date,setDate]=useState("");const [time,setTime]=useState("09:00");const [kind,setKind]=useState("first_visit");const [reason,setReason]=useState("");const [symptoms,setSymptoms]=useState("");const [notes,setNotes]=useState("");const [age,setAge]=useState("");const [gender,setGender]=useState("");const [busy,setBusy]=useState(false);const [error,setError]=useState("");const [message,setMessage]=useState("");
+ const [profile,setProfile]=useState<any>(null);const [serviceId,setServiceId]=useState("");const [date,setDate]=useState("");const [time,setTime]=useState("");const [slots,setSlots]=useState<string[]>([]);const [kind,setKind]=useState("first_visit");const [reason,setReason]=useState("");const [symptoms,setSymptoms]=useState("");const [notes,setNotes]=useState("");const [age,setAge]=useState("");const [gender,setGender]=useState("");const [busy,setBusy]=useState(false);const [error,setError]=useState("");const [message,setMessage]=useState("");
  async function load(){
   const {data:{user}}=await supabase.auth.getUser();if(!user){router.replace("/account?next=%2Fappointments");return;}
   setUserId(user.id);
@@ -20,7 +20,7 @@ export default function AppointmentsPage(){
   if(se)setError("Could not load available services.");else{setServices((sv||[]) as Service[]);if(sv?.length&&!serviceId)setServiceId(sv[0].id);}
   setProfile(pr);if(ae)setError("Could not load appointments.");else setItems((ap||[]) as Appointment[]);
  }
- useEffect(()=>{void load();},[]);
+ useEffect(()=>{void load();},[]);\n useEffect(()=>{let active=true;if(!date){setSlots([]);setTime("");return()=>{active=false};} (async()=>{const {data,error}=await supabase.rpc("get_available_slots",{p_date:date});if(!active)return;if(error){setSlots([]);setTime("");setError("Could not load appointment times for that date.");return;}const next=(data||[]).map((x:any)=>String(x.slot_time).slice(0,5));setSlots(next);setTime(next[0]||"");if(!next.length)setMessage("No appointment times are available on this date. Choose another date.");else setMessage("");})();return()=>{active=false};},[date]);
  async function book(e:React.FormEvent){
   e.preventDefault();setBusy(true);setError("");setMessage("");
   try{
@@ -52,13 +52,13 @@ export default function AppointmentsPage(){
  <section className="booking-panel"><h2>Book an appointment</h2><p>Signed in as {profile.full_name||profile.email}. Fees are retrieved from the hospital database and cannot be changed in this form.</p>
  <form className="account-form booking-form" onSubmit={book}>
  <label>Service<select value={serviceId} onChange={e=>setServiceId(e.target.value)} required><option value="">Choose a service</option>{services.map(s=><option key={s.id} value={s.id}>{s.name} — {money(s.price)}</option>)}</select></label>
- <div className="form-grid"><label>Date<input type="date" value={date} min={new Date().toLocaleDateString("en-CA")} max={new Date(Date.now()+180*86400000).toLocaleDateString("en-CA")} onChange={e=>setDate(e.target.value)} required/></label><label>Preferred time<input type="time" value={time} onChange={e=>setTime(e.target.value)} required/></label></div>
+ <div className="form-grid"><label>Date<input type="date" value={date} min={new Date().toLocaleDateString("en-CA")} max={new Date(Date.now()+180*86400000).toLocaleDateString("en-CA")} onChange={e=>setDate(e.target.value)} required/></label><label>Available time<select value={time} onChange={e=>setTime(e.target.value)} required disabled={!date||!slots.length}><option value="">{!date?"Choose a date first":slots.length?"Choose a time":"No available times"}</option>{slots.map(slot=><option key={slot} value={slot}>{slot}</option>)}</select></label></div>
  <label>Visit type<select value={kind} onChange={e=>setKind(e.target.value)}><option value="first_visit">First visit</option><option value="follow_up">Follow-up</option></select></label>
  <label>Reason for visit<textarea value={reason} onChange={e=>setReason(e.target.value)} maxLength={500} rows={3} required placeholder="Brief reason for your visit"/></label>
  <label>Symptoms (optional)<textarea value={symptoms} onChange={e=>setSymptoms(e.target.value)} maxLength={3000} rows={3} placeholder="Describe symptoms, if relevant"/></label>
  <label>Additional notes (optional)<textarea value={notes} onChange={e=>setNotes(e.target.value)} maxLength={3000} rows={3} placeholder="Other information for the hospital"/></label>
  <div className="form-grid"><label>Age (optional)<input type="number" min="0" max="120" value={age} onChange={e=>setAge(e.target.value)}/></label><label>Gender (optional)<select value={gender} onChange={e=>setGender(e.target.value)}><option value="">Prefer not to say</option><option value="female">Female</option><option value="male">Male</option><option value="other">Other</option><option value="prefer_not_to_say">Prefer not to say</option></select></label></div>
- <button className="button primary full" disabled={busy||!services.length}>{busy?"Processing securely…":"Request appointment and pay"}</button>
+ <button className="button primary full" disabled={busy||!services.length||!slots.length||!time}>{busy?"Processing securely…":"Request appointment and pay"}</button>
  <small>Appointment confirmation happens only after server-side Paystack verification. Refreshing this page will not mark a payment as successful.</small>
  </form></section>
  <section className="booking-panel"><h2>Your appointments</h2>{!items.length?<p>No appointments yet.</p>:<div className="appointment-list">{items.map(a=><article className="appointment-item" key={a.id}><div><strong>{services.find(s=>s.id===a.service_id)?.name||"Hospital appointment"}</strong><p>{a.appointment_date} at {String(a.appointment_time).slice(0,5)}</p><p>{a.reason_for_visit}</p><div className="status-row"><span className={"status-pill "+(a.payment_status==="paid"?"paid":"pending")}>Payment: {a.payment_status}</span><span className="status-pill">Status: {a.status}</span></div></div><div className="appointment-side"><strong>{money(a.amount)}</strong>{a.payment_status!=="paid"&&a.status!=="cancelled"&&a.status!=="completed"&&<button className="button primary" disabled={busy} onClick={()=>void pay(a.id)}>Pay securely</button>}</div></article>)}</div>}</section>
