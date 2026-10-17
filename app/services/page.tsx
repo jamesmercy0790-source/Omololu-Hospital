@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SiteHeader from "../../components/SiteHeader";
 import SiteFooter from "../../components/SiteFooter";
-export const metadata: Metadata = { title: "Medical, Maternity, Diagnostic and Emergency Services", description: "Explore medical consultations, emergency care, maternity, gynaecology, surgery, paediatric care, laboratory, ultrasound and other services at Omololu Hospital in Ibadan.", alternates: { canonical: "/services" } };
+export const metadata: Metadata = { title: "Medical, Maternity, Diagnostic and Emergency Services", description: "Explore medical consultations, emergency care, maternity, gynaecology, surgery, paediatric care, laboratory, ultrasound and other services at Omololu Hospital in Ibadan.", alternates: { canonical: "/services" },
+  openGraph: { type: "website", url: "/services", siteName: "OMOLOLU HOSPITAL AND DIAGNOSTIC SERVICES", title: "Medical, Maternity, Diagnostic and Emergency Services | Omololu Hospital", description: "Explore medical consultations, emergency care, maternity, gynaecology, surgery, paediatric care, laboratory, ultrasound and other services at Omololu Hospital in Ibadan.", images: [{ url: "/photo_2026-09-26_02-25-49.jpg", alt: "OMOLOLU HOSPITAL AND DIAGNOSTIC SERVICES" }] },
+  twitter: { card: "summary_large_image", title: "Medical, Maternity, Diagnostic and Emergency Services | Omololu Hospital", description: "Explore medical consultations, emergency care, maternity, gynaecology, surgery, paediatric care, laboratory, ultrasound and other services at Omololu Hospital in Ibadan.", images: ["/photo_2026-09-26_02-25-49.jpg"] } };
 const services = [
 ["General Medical Consultations and Treatment","Medical assessment, treatment, preventive healthcare and continuing care tailored to patient needs."],
 ["Emergency Medical Care","Round-the-clock initial assessment, stabilisation and management of urgent medical conditions."],
