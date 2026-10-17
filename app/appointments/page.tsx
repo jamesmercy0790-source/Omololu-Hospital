@@ -1,6 +1,7 @@
 "use client";
 import { useEffect,useState } from "react";
 import Link from "next/link";
+import SiteHeader from "../../components/SiteHeader";
 import { useRouter } from "next/navigation";
 import { supabaseBrowser } from "../../lib/supabase";
 type Service={id:string;name:string;description:string;price:number;duration_minutes:number};
@@ -46,7 +47,7 @@ export default function AppointmentsPage(){
   catch(err){setError(err instanceof Error?err.message:"Could not start payment.");}finally{setBusy(false);}
  }
  const money=(v:number)=>new Intl.NumberFormat("en-NG",{style:"currency",currency:"NGN",maximumFractionDigits:2}).format(Number(v||0));
- return <main className="booking-page"><div className="booking-wrap"><Link href="/" className="account-back">← Hospital home</Link>
+ return <><SiteHeader /><main className="booking-page"><div className="booking-wrap"><Link href="/" className="account-back">← Hospital home</Link>
  <p className="eyebrow">PATIENT PORTAL</p><h1>Appointments</h1><p className="account-intro">Your appointments and payment status are shared with the Omololu Hospital mobile app.</p>
  {error&&<p className="form-alert error" role="alert">{error}</p>}{message&&<p className="form-alert success" role="status">{message}</p>}
  {!profile?<div className="booking-panel"><p>Loading your secure account…</p><Link href="/account">Sign in</Link></div>:<>
@@ -64,5 +65,5 @@ export default function AppointmentsPage(){
  </form></section>
  <section className="booking-panel"><h2>Your appointments</h2>{!items.length?<p>No appointments yet.</p>:<div className="appointment-list">{items.map(a=><article className="appointment-item" key={a.id}><div><strong>{services.find(s=>s.id===a.service_id)?.name||"Hospital appointment"}</strong><p>{a.appointment_date} at {String(a.appointment_time).slice(0,5)}</p><p>{a.reason_for_visit}</p><div className="status-row"><span className={"status-pill "+(a.payment_status==="paid"?"paid":"pending")}>Payment: {a.payment_status}</span><span className="status-pill">Status: {a.status}</span></div></div><div className="appointment-side"><strong>{money(a.amount)}</strong>{a.payment_status!=="paid"&&a.status!=="cancelled"&&a.status!=="completed"&&<button className="button primary" disabled={busy} onClick={()=>void pay(a.id)}>Pay securely</button>}</div></article>)}</div>}</section>
  </>}
- <p className="privacy-note">For emergencies, call +234 806 748 9645 or +234 803 377 0933. Do not wait for an online appointment.</p></div></main>;
+ <p className="privacy-note">For emergencies, call +234 806 748 9645 or +234 803 377 0933. Do not wait for an online appointment.</p></div></main></>;
 }
