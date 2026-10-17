@@ -51,7 +51,13 @@ export default function SiteHeader() {
       setSignedIn(Boolean(session));
       if (session) {
         const last = Number(localStorage.getItem(ACTIVITY_KEY) || 0);
-        if (!last || Date.now() - last >= SESSION_LIMIT_MS) localStorage.setItem(ACTIVITY_KEY, String(Date.now()));
+        if (last && Date.now() - last >= SESSION_LIMIT_MS) {
+          localStorage.removeItem(ACTIVITY_KEY);
+          await supabase.auth.signOut();
+          if (active) setSignedIn(false);
+        } else if (!last) {
+          localStorage.setItem(ACTIVITY_KEY, String(Date.now()));
+        }
       } else {
         localStorage.removeItem(ACTIVITY_KEY);
       }
@@ -60,6 +66,16 @@ export default function SiteHeader() {
     void start();
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (!active) return;
+      if (event === "INITIAL_SESSION" && session) {
+        const last = Number(localStorage.getItem(ACTIVITY_KEY) || 0);
+        if (last && Date.now() - last >= SESSION_LIMIT_MS) {
+          localStorage.removeItem(ACTIVITY_KEY);
+          setSignedIn(false);
+          void supabase.auth.signOut();
+          return;
+        }
+        if (!last) localStorage.setItem(ACTIVITY_KEY, String(Date.now()));
+      }
       setSignedIn(Boolean(session));
       if (event === "SIGNED_IN") localStorage.setItem(ACTIVITY_KEY, String(Date.now()));
       if (event === "SIGNED_OUT") localStorage.removeItem(ACTIVITY_KEY);
