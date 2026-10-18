@@ -1,10 +1,13 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Script from "next/script";
 import Link from "next/link";
 import SiteHeader from "../../components/SiteHeader";
 import { supabaseBrowser } from "../../lib/supabase";
 
 type Profile = { id:string; email:string; full_name:string; phone:string; avatar_url:string|null; role:string };
+type TurnstileApi = { render:(container:HTMLElement, options:{sitekey:string;callback:(token:string)=>void;"expired-callback"?:()=>void;"error-callback"?:()=>void})=>string; reset:(widgetId?:string)=>void };
+declare global { interface Window { turnstile?: TurnstileApi } }
 export default function AccountPage() {
   const supabase = supabaseBrowser();
   const [mode,setMode] = useState<"login"|"signup">("login");
@@ -17,6 +20,10 @@ export default function AccountPage() {
   const [busy,setBusy] = useState(false);
   const [message,setMessage] = useState("");
   const [error,setError] = useState("");
+  const [captchaToken,setCaptchaToken] = useState("");
+  const captchaRef = useRef<HTMLDivElement>(null);
+  const captchaWidgetId = useRef<string | null>(null);
+  const captchaSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   async function loadProfile() {
     const {data:{user}} = await supabase.auth.getUser();
     if(!user) { setProfile(null); return; }
@@ -32,12 +39,12 @@ export default function AccountPage() {
       if(mode==="signup") {
         if(name.trim().length<2 || name.length>120) throw new Error("Enter your full name (2–120 characters).");
         if(phone.trim().length<7 || phone.length>30) throw new Error("Enter a valid phone number.");
-        const {data,error}=await supabase.auth.signUp({email:email.trim().toLowerCase(),password,options:{data:{full_name:name.trim(),phone:phone.trim(),role:"patient"}}});
+        const {data,error}=await supabase.auth.signUp({email:email.trim().toLowerCase(),password,options:{data:{full_name:name.trim(),phone:phone.trim(),role:"patient"},captchaToken:captchaSiteKey?captchaToken:undefined}});
         if(error) throw error;
         if(!data.session) setMessage("Account created. Check your email to confirm the account, then sign in.");
         else { setMessage("Account created."); await loadProfile(); }
       } else {
-        const {error}=await supabase.auth.signInWithPassword({email:email.trim().toLowerCase(),password});
+        const {error}=await supabase.auth.signInWithPassword({email:email.trim().toLowerCase(),password,options:{captchaToken:captchaSiteKey?captchaToken:undefined}});
         if(error) throw error;
         setMessage("Signed in successfully."); await loadProfile();
       }
@@ -94,8 +101,8 @@ export default function AccountPage() {
       <label>Email address<input type="email" value={email} maxLength={254} onChange={e=>setEmail(e.target.value)} required autoComplete="email"/></label>
       <label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} minLength={8} maxLength={128} required autoComplete={mode==="signup"?"new-password":"current-password"}/></label>
       <button className="button primary full" disabled={busy}>{busy?"Please wait…":mode==="signup"?"Create patient account":"Sign in"}</button>
-      <button type="button" className="text-button" onClick={()=>{setMode(mode==="login"?"signup":"login");setError("");setMessage("");}}>{mode==="login"?"New patient? Create an account":"Already have an account? Sign in"}</button>
-      <button type="button" className="text-button" onClick={async()=>{setError("");setMessage("");if(!email.trim()){setError("Enter your email first.");return;}const {error}=await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(),{redirectTo:window.location.origin+"/account"});if(error)setError(error.message);else setMessage("If the email is registered, a password-reset link has been sent.");}}>Forgot password?</button>
+      <button type="button" className="text-button" onClick={()=>{setMode(mode==="login"?"signup":"login");setError("");setMessage("");if(captchaSiteKey)resetCaptcha();}}>{mode==="login"?"New patient? Create an account":"Already have an account? Sign in"}</button>
+      <button type="button" className="text-button" onClick={async()=>{setError("");setMessage("");if(!email.trim()){setError("Enter your email first.");return;}if(captchaSiteKey&&!captchaToken){setError("Complete the security check first.");return;}const {error}=await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(),{redirectTo:window.location.origin+"/account",captchaToken:captchaSiteKey?captchaToken:undefined});if(captchaSiteKey)resetCaptcha();if(error)setError(error.message);else setMessage("If the email is registered, a password-reset link has been sent.");}}>Forgot password?</button>
     </form>}
     <p className="privacy-note">Do not use online booking for emergencies. Call the hospital directly.</p>
   </div></main></>;
