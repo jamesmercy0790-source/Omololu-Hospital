@@ -31,8 +31,22 @@ export default function AccountPage() {
     if(data) { setProfile(data as Profile); setName(data.full_name||""); setPhone(data.phone||""); setAvatar(data.avatar_url||""); }
   }
   useEffect(()=>{ void loadProfile(); const {data:{subscription}}=supabase.auth.onAuthStateChange(()=>{void loadProfile()}); return ()=>subscription.unsubscribe(); },[]);
+  function renderCaptcha() {
+    if (!captchaSiteKey || !captchaRef.current || !window.turnstile || captchaWidgetId.current) return;
+    captchaWidgetId.current = window.turnstile.render(captchaRef.current, {
+      sitekey: captchaSiteKey,
+      callback: (token) => { setCaptchaToken(token); setError(""); },
+      "expired-callback": () => setCaptchaToken(""),
+      "error-callback": () => { setCaptchaToken(""); setError("Security check failed. Please try again."); },
+    });
+  }
+  function resetCaptcha() {
+    setCaptchaToken("");
+    if (captchaWidgetId.current && window.turnstile) window.turnstile.reset(captchaWidgetId.current);
+  }
   async function submit(e:React.FormEvent) {
     e.preventDefault(); setBusy(true); setError(""); setMessage("");
+    if (captchaSiteKey && !captchaToken) { setBusy(false); setError("Complete the security check first."); return; }
     try {
       if(!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) throw new Error("Enter a valid email address.");
       if(password.length<8) throw new Error("Password must be at least 8 characters.");
@@ -49,7 +63,7 @@ export default function AccountPage() {
         setMessage("Signed in successfully."); await loadProfile();
       }
     } catch(err) { setError(err instanceof Error?err.message:"Unable to complete the request."); }
-    finally {setBusy(false);}
+    finally {setBusy(false); if(captchaSiteKey) resetCaptcha();}
   }
   async function saveProfile(e:React.FormEvent) {
     e.preventDefault(); setBusy(true); setError(""); setMessage("");
