@@ -603,3 +603,12 @@ footer .button { min-height: 50px; }
   .emergency-copy strong { width:100%; }
   .emergency-actions { width:100%; justify-content:flex-start; }
 }
+
+
+/* About-the-doctor profile; uses the site's existing palette and scales on mobile. */
+.doctor-profile { align-items:center; }
+.doctor-profile-portrait { min-height:300px; border-radius:18px; background:linear-gradient(145deg,#e8f3f8,#d5e8f0); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; text-align:center; padding:24px; color:#315a73; }
+.doctor-profile-portrait span { width:112px; height:112px; border-radius:50%; display:grid; place-items:center; background:rgba(255,255,255,.82); border:3px solid rgba(49,90,115,.18); font-size:36px; font-weight:800; letter-spacing:2px; }
+.doctor-profile-portrait small { font-size:13px; font-weight:700; }
+#about-doctor .hero-copy { font-weight:700; }
+@media (max-width:640px) { .doctor-profile-portrait { min-height:220px; } }
