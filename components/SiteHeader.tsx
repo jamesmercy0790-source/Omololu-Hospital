@@ -112,7 +112,7 @@ export default function SiteHeader() {
             <span className="emergency-separator" aria-hidden="true">|</span>
             <a href="tel:+2348033770933">+234 803 377 0933</a>
           </div>
-          <a className="emergency-button" href="tel:+2348067489645" aria-label="Call the hospital emergency hotline">Call Emergency</a>
+          <div className="emergency-actions"><Link className="emergency-book-button" href="/appointments">Book Appointment</Link><a className="emergency-button" href="tel:+2348067489645" aria-label="Call the hospital emergency hotline">Call Emergency</a></div>
         </div>
       </div>
       <header className="site-header">
