@@ -614,21 +614,26 @@ footer .button { min-height: 50px; }
 @media (max-width:640px) { .doctor-profile-portrait { min-height:220px; } }
 
 
-/* Round doctor portrait with a centered face crop, matching an app profile photo. */
+/* Round passport-style portrait cropped from the head through the upper chest. */
 .doctor-profile-portrait {
+  position: relative !important;
+  width: min(100%, 320px) !important;
+  aspect-ratio: 1 / 1;
   min-height: 0 !important;
   padding: 0 !important;
   background: transparent !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  display: block !important;
+  overflow: hidden !important;
+  border-radius: 50%;
+  justify-self: center;
 }
 .doctor-profile-portrait img {
   display: block !important;
-  width: min(100%, 320px) !important;
-  aspect-ratio: 1 / 1;
-  height: auto !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
   object-fit: cover !important;
-  object-position: center 35% !important;
-  border-radius: 50%;
+  object-position: center !important;
+  transform: scale(1.45);
+  transform-origin: center 25%;
 }
