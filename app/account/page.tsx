@@ -11,6 +11,9 @@ declare global { interface Window { turnstile?: TurnstileApi } }
 export default function AccountPage() {
   const supabase = supabaseBrowser();
   const [mode,setMode] = useState<"login"|"signup">("login");
+  const [recoveryMode,setRecoveryMode] = useState(false);
+  const [newPassword,setNewPassword] = useState("");
+  const [confirmPassword,setConfirmPassword] = useState("");
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
   const [name,setName] = useState("");
@@ -30,7 +33,7 @@ export default function AccountPage() {
     const {data} = await supabase.from("profiles").select("id,email,full_name,phone,avatar_url,role").eq("id",user.id).maybeSingle();
     if(data) { setProfile(data as Profile); setName(data.full_name||""); setPhone(data.phone||""); setAvatar(data.avatar_url||""); }
   }
-  useEffect(()=>{ void loadProfile(); const {data:{subscription}}=supabase.auth.onAuthStateChange(()=>{void loadProfile()}); return ()=>subscription.unsubscribe(); },[]);
+  useEffect(()=>{ void loadProfile(); const {data:{subscription}}=supabase.auth.onAuthStateChange((event)=>{ if(event==="PASSWORD_RECOVERY") { setRecoveryMode(true); setProfile(null); setMessage("Choose a new password for your account."); } else if(event==="SIGNED_OUT") { setRecoveryMode(false); } else { void loadProfile(); } }); return ()=>subscription.unsubscribe(); },[]);
   function renderCaptcha() {
     if (!captchaSiteKey || !captchaRef.current || !window.turnstile || captchaWidgetId.current) return;
     captchaWidgetId.current = window.turnstile.render(captchaRef.current, {
@@ -64,6 +67,19 @@ export default function AccountPage() {
       }
     } catch(err) { setError(err instanceof Error?err.message:"Unable to complete the request."); }
     finally {setBusy(false); if(captchaSiteKey) resetCaptcha();}
+  }
+  async function updatePassword(e:React.FormEvent) {
+    e.preventDefault(); setBusy(true); setError(""); setMessage("");
+    try {
+      if(newPassword.length<8) throw new Error("Your new password must be at least 8 characters.");
+      if(newPassword!==confirmPassword) throw new Error("The passwords do not match.");
+      const {error}=await supabase.auth.updateUser({password:newPassword});
+      if(error) throw error;
+      setRecoveryMode(false); setNewPassword(""); setConfirmPassword("");
+      setMessage("Password updated successfully. You can now sign in with your new password.");
+      await supabase.auth.signOut();
+    } catch(err) { setError(err instanceof Error?err.message:"Unable to update password. Request a new reset link and try again."); }
+    finally { setBusy(false); }
   }
   async function saveProfile(e:React.FormEvent) {
     e.preventDefault(); setBusy(true); setError(""); setMessage("");
@@ -101,7 +117,7 @@ export default function AccountPage() {
     <p className="eyebrow">PATIENT ACCOUNT</p><h1>{profile?"Your profile":"Welcome to Omololu Hospital"}</h1>
     <p className="account-intro">Use the same hospital account as the mobile app.</p>
     {error&&<p className="form-alert error" role="alert">{error}</p>}{message&&<p className="form-alert success" role="status">{message}</p>}
-    {profile ? <form onSubmit={saveProfile} className="account-form">
+    {recoveryMode ? <form onSubmit={updatePassword} className="account-form"><label>New password<input type="password" value={newPassword} onChange={e=>setNewPassword(e.target.value)} minLength={8} maxLength={128} autoComplete="new-password" required /></label><label>Confirm new password<input type="password" value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)} minLength={8} maxLength={128} autoComplete="new-password" required /></label><button className="button primary full" disabled={busy}>{busy?"Updating…":"Update password"}</button></form> : profile ? <form onSubmit={saveProfile} className="account-form">
       <div className="avatar-row">{avatar?<img src={avatar} alt="Your profile" className="patient-avatar"/>:<div className="patient-avatar placeholder">{(name||profile.email).slice(0,1).toUpperCase()}</div>}
         <label className="button secondary">Change picture<input type="file" accept="image/png,image/jpeg,image/webp" hidden onChange={e=>void uploadAvatar(e.target.files?.[0])}/></label></div>
       <label>Full name<input value={name} maxLength={120} onChange={e=>setName(e.target.value)} required /></label>
