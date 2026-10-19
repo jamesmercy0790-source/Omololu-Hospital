@@ -634,6 +634,6 @@ footer .button { min-height: 50px; }
   height: 100% !important;
   object-fit: cover !important;
   object-position: center !important;
-  transform: scale(1.45);
-  transform-origin: center 25%;
+  transform: scale(1.5);
+  transform-origin: center 10%;
 }
