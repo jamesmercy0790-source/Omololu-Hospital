@@ -587,3 +587,19 @@ footer .button { min-height: 50px; }
 @media (max-width: 850px) {
   .page-transition { animation: pageEnter .32s ease both; }
 }
+
+
+/* Responsive styling for the appointment action beside the emergency call button. */
+.emergency-actions { display:flex; align-items:center; justify-content:flex-end; gap:10px; flex:0 0 auto; }
+.emergency-book-button { display:inline-flex; align-items:center; justify-content:center; min-height:36px; padding:8px 14px; border:1px solid rgba(255,255,255,.65); border-radius:8px; color:#fff; font-size:13px; font-weight:800; white-space:nowrap; transition:background .2s ease,transform .2s ease; }
+.emergency-book-button:hover { background:rgba(255,255,255,.12); transform:translateY(-1px); }
+@media (max-width:850px) {
+  .emergency-inner { flex-wrap:wrap; align-items:center; }
+  .emergency-actions { margin-left:auto; }
+}
+@media (max-width:520px) {
+  .emergency-inner { gap:8px; }
+  .emergency-copy { gap:6px 9px; font-size:12px; }
+  .emergency-copy strong { width:100%; }
+  .emergency-actions { width:100%; justify-content:flex-start; }
+}
