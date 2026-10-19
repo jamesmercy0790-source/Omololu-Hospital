@@ -614,7 +614,7 @@ footer .button { min-height: 50px; }
 @media (max-width:640px) { .doctor-profile-portrait { min-height:220px; } }
 
 
-/* Show the complete original doctor photograph without cropping. */
+/* Round doctor portrait with a centered face crop, matching an app profile photo. */
 .doctor-profile-portrait {
   min-height: 0 !important;
   padding: 0 !important;
@@ -622,15 +622,13 @@ footer .button { min-height: 50px; }
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  overflow: visible !important;
 }
 .doctor-profile-portrait img {
   display: block !important;
-  width: 100% !important;
-  max-width: 100% !important;
+  width: min(100%, 320px) !important;
+  aspect-ratio: 1 / 1;
   height: auto !important;
-  max-height: none !important;
-  object-fit: contain !important;
-  object-position: center !important;
-  border-radius: 18px;
+  object-fit: cover !important;
+  object-position: center 35% !important;
+  border-radius: 50%;
 }
