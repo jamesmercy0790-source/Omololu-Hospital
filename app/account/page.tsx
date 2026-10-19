@@ -31,6 +31,7 @@ export default function AccountPage() {
     const {data:{user}} = await supabase.auth.getUser();
     if(!user) { setProfile(null); return; }
     const {data} = await supabase.from("profiles").select("id,email,full_name,phone,avatar_url,role").eq("id",user.id).maybeSingle();
+    if(data?.role==="doctor") { setProfile(null); await supabase.auth.signOut(); setError("Doctor accounts can only be accessed through the OMOLOLU HOSPITAL Android app."); return; }
     if(data) { setProfile(data as Profile); setName(data.full_name||""); setPhone(data.phone||""); setAvatar(data.avatar_url||""); }
   }
   useEffect(()=>{ void loadProfile(); const {data:{subscription}}=supabase.auth.onAuthStateChange((event)=>{ if(event==="PASSWORD_RECOVERY") { setRecoveryMode(true); setProfile(null); setMessage("Choose a new password for your account."); } else if(event==="SIGNED_OUT") { setRecoveryMode(false); } else { void loadProfile(); } }); return ()=>subscription.unsubscribe(); },[]);
@@ -61,8 +62,11 @@ export default function AccountPage() {
         if(!data.session) setMessage("Account created. Check your email to confirm the account, then sign in.");
         else { setMessage("Account created."); await loadProfile(); }
       } else {
-        const {error}=await supabase.auth.signInWithPassword({email:email.trim().toLowerCase(),password,options:{captchaToken:captchaSiteKey?captchaToken:undefined}});
+        const {data,error}=await supabase.auth.signInWithPassword({email:email.trim().toLowerCase(),password,options:{captchaToken:captchaSiteKey?captchaToken:undefined}});
         if(error) throw error;
+        const {data:accountProfile,error:profileError}=await supabase.from("profiles").select("role").eq("id",data.user.id).maybeSingle();
+        if(profileError) throw profileError;
+        if(accountProfile?.role==="doctor") { await supabase.auth.signOut(); throw new Error("Doctor accounts can only be accessed through the OMOLOLU HOSPITAL Android app."); }
         setMessage("Signed in successfully."); await loadProfile();
       }
     } catch(err) { setError(err instanceof Error?err.message:"Unable to complete the request."); }
