@@ -612,3 +612,25 @@ footer .button { min-height: 50px; }
 .doctor-profile-portrait small { font-size:13px; font-weight:700; }
 #about-doctor .hero-copy { font-weight:700; }
 @media (max-width:640px) { .doctor-profile-portrait { min-height:220px; } }
+
+
+/* Show the complete original doctor photograph without cropping. */
+.doctor-profile-portrait {
+  min-height: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: visible !important;
+}
+.doctor-profile-portrait img {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  border-radius: 18px;
+}
